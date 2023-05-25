@@ -83,6 +83,39 @@ void dumpVtk(Aggregate const & aggregate, const char * path) {
     ofs.close();
 }
 
+float mean(std::vector<float> const & x) {
+    if (x.empty()) {
+        cerr << "ERROR: Empty array supplied to mean()" << endl;
+        exit(EXIT_FAILURE);
+    }
+
+    float buff = 0.0f;
+    for (auto v : x)
+        buff += v;
+    return buff/float(x.size());
+}
+
+LinearModel linearRegression(std::vector<float> const & y, std::vector<float> const & x) {
+    if (y.empty() || x.empty()) {
+        cerr << "ERROR: Empty array supplied to linearRegression()" << endl;
+    }
+    if (y.size() != x.size()) {
+        cerr << "ERROR: Arrays supplied to linearRegression() are of diffrerent sizes" << endl;
+        exit(EXIT_FAILURE);
+    }
+    
+    float y_bar = mean(y);
+    float x_bar = mean(x);
+    float a = 0.0f, b = 0.0f;
+    for (int i = 0; i < y.size(); i ++) {
+        a += (x[i]-x_bar)*(y[i]-y_bar);
+        b += (x[i]-x_bar)*(x[i]-x_bar);
+    }
+    float beta = a/b;
+    float alpha = y_bar-beta*x_bar;
+    return {beta, alpha};
+}
+
 ostream & operator << (ostream & os, Aggregate const & aggregate) {
     os << "AGGREGATE, N=" << aggregate.size() << endl;
     for (auto const & v : aggregate) {
