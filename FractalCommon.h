@@ -1,3 +1,6 @@
+// Collection of functions frequently used in fractal analysis
+// Made by Egor Demidov in 2023
+
 #ifndef FRACTAL_COMMON_H
 #define FRACTAL_COMMON_H
 
@@ -11,6 +14,10 @@ struct LinearModel {
     float slope;
     float intercept;
 };
+
+// Extract a sub-vector based on provided list of indices
+template<typename T>
+std::vector<T> getSubVector(std::vector<T> const & v, std::vector<int> const & indices);
 
 // Calcuate the radius of gyration of an aggregate (optional: use formula from Filippov et al 2000)
 float radiusOfGyration(Aggregate const & aggregate, bool useFilippov=false);

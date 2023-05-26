@@ -1,3 +1,6 @@
+// Collection of functions frequently used in fractal analysis
+// Made by Egor Demidov in 2023
+
 #include <fstream>
 #include <cmath>
 
@@ -5,6 +8,19 @@
 
 using Eigen::Vector3f;
 using namespace std;
+
+template<typename T>
+std::vector<T> getSubVector(std::vector<T> const & v, std::vector<int> const & indices) {
+    vector<T> out;
+    out.reserve(indices.size());
+    for (auto i : indices)
+        out.emplace_back(v[i]);
+    return out;
+}
+
+// Instantiation of templates
+template Aggregate getSubVector(Aggregate const & v, vector<int> const & indices);
+// End instantiation of templates
 
 float radiusOfGyration(Aggregate const & aggregate, bool useFilippov) {
     /* TODO: implement */
@@ -107,7 +123,7 @@ LinearModel linearRegression(std::vector<float> const & y, std::vector<float> co
     float y_bar = mean(y);
     float x_bar = mean(x);
     float a = 0.0f, b = 0.0f;
-    for (int i = 0; i < y.size(); i ++) {
+    for (unsigned i = 0; i < y.size(); i ++) {
         a += (x[i]-x_bar)*(y[i]-y_bar);
         b += (x[i]-x_bar)*(x[i]-x_bar);
     }
